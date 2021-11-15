@@ -136,14 +136,14 @@
         </div>
         <div class="modal">
             <div class="modal-content">
-                <p style="margin: 13px 0 13px 0" v-if="sourceToUpdate">
+                <p style="margin: 13px 0 13px 0" v-if="sourceChapterToUpdate">
                     <label for="chapter">Current chapter</label>
                     <input
                         id="chapter"
                         type="number"
                         onkeypress="return /[0-9]/i.test(event.key)"
                         placeholder="Type the current chapter"
-                        v-model="sourceToUpdate.currentChapter"
+                        v-model="sourceChapterToUpdate"
                     />
                 </p>
                 <div style="margin-left: auto; display: flex">
@@ -169,7 +169,7 @@ export default {
         return {
             username: "",
             password: "",
-            sourceToUpdate: null,
+            sourceChapterToUpdate: null,
         };
     },
     mounted() {
@@ -245,19 +245,20 @@ export default {
             this.$store.commit("deleteSource", source);
         },
         openModal(source) {
-            this.sourceToUpdate = source;
+            this.sourceChapterToUpdate = source.currentChapter;
             let modal = document.querySelector(".modal");
             let cancelBtn = document.querySelector(".close-cancel-btn");
             let saveBtn = document.querySelector(".close-save-btn");
             let clearModal = () => {
                 modal.style.display = "none";
-                this.sourceToUpdate = null;
+                this.sourceChapterToUpdate = null;
             }
             cancelBtn.onclick = () => {
                 clearModal();
             };
             saveBtn.onclick = () => {
-                this.$store.commit('updateSource', this.sourceToUpdate);
+                source.currentChapter = this.sourceChapterToUpdate;
+                this.$store.commit('updateSource', source);
                 clearModal();
             };
             window.onclick = (e) => {
