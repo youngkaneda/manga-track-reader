@@ -1,6 +1,6 @@
 # manx-read-track
 
-A simple manga/manhua/manhwa, or even book track reader for you keep track where you are in your lists.
+A simple manga/manhua/manhwa, or even book track reader for you keep track where you are in your list.
 
 ![ss](ss.png)
 
