@@ -109,6 +109,7 @@
             <p>
                 <label for="username">Username</label>
                 <input
+                    autocorrect="off" autocapitalize="none" autocomplete="off"
                     id="username"
                     type="text"
                     placeholder="Type your username"
