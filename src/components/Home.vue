@@ -162,6 +162,7 @@ import {
     query,
     where,
     onSnapshot,
+    doc
 } from "firebase/firestore";
 export default {
     data() {
@@ -195,11 +196,20 @@ export default {
                         sources.push({ id: doc.id, ...doc.data() })
                     );
                     this.$store.commit("sources", sources);
-                    console.log("receiving updated snapshot.");
+                    console.log("receiving updated snapshot source data.");
                 });
                 this.$store.commit("cacheUnsub", unsub);
             } else {
-                console.log("data listener still cached");
+                console.log("data listener for sources still cached");
+            }
+            if (!this.$store.state.unsubUs) {
+                const unsubUs = onSnapshot(doc(db, "users", this.user.id), (doc) => {
+                    this.$store.commit('setUser', { id: doc.id, ...doc.data() })
+                    console.log("receiving updated snapshot user data.");
+                });
+                this.$store.commit("cacheUnsubUs", unsubUs);
+            } else {
+                console.log("data listener for user still cached");
             }
             return;
         }

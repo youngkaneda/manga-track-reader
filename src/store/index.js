@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { db } from './firebase';
 import { toast } from 'toast-notification-alert';
-import { doc, collection, getDocs, addDoc, setDoc, deleteDoc, query, where, onSnapshot } from 'firebase/firestore';
+import { doc, collection, getDocs, addDoc, setDoc, deleteDoc, query, where, onSnapshot, getDoc } from 'firebase/firestore';
 
 Vue.use(Vuex);
 
@@ -11,6 +11,7 @@ export default new Vuex.Store({
     plugins: [createPersistedState()],
     state: {
         unsub: null,
+        unsubUs: null,
         user: null,
         sources: [],
     },
@@ -52,6 +53,9 @@ export default new Vuex.Store({
         },
         cacheUnsub(state, unsub) {
             state.unsub = unsub;
+        },
+        cacheUnsubUs(state, unsub) {
+            state.unsubUs = unsub;
         }
     },
     actions: {
@@ -74,12 +78,18 @@ export default new Vuex.Store({
                             sources.push({ id: doc.id, ...doc.data() })
                         );
                         commit("sources", sources);
-                        console.log("receiving updated snapshot.");
+                        console.log("receiving updated snapshot source data.");
                     });
+                    const unsubUs = onSnapshot(doc(db, "users", userId), (doc) => {
+                        commit('setUser', { id: doc.id, ...doc.data() })
+                        console.log("receiving updated snapshot user data.");
+                    });
+                    commit('cacheUnsub', unsub);
+                    commit('cacheUnsubUs', unsubUs);
                 }
             });
         },
-        updateUser({ commit }, user, oldUsername) {
+        updateUser({ commit }, user) {
             let id = user.id;
             delete user.id;
             setDoc(doc(db, 'users', id), user);

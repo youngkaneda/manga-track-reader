@@ -38,13 +38,11 @@ export default {
         return {
             user: null,
             newAvatar: null,
-            oldUsername: null,
         }
     },
     mounted() {
         if (this.$route.params.user) {
             this.user = this.$route.params.user;
-            this.oldUsername = this.user.username;
         } else {
             this.$router.push('/');
         }
@@ -68,12 +66,12 @@ export default {
                 toast.show({ title: 'invalid username.', position: 'topright', type: 'error' });
                 return ;
             }
-            if (this.newAvatar.length >= 1048487) {
+            if (this.newAvatar && this.newAvatar.length >= 1048487) {
                 toast.show({ title: 'image size is too large.', position: 'topright', type: 'error' });
                 return ;
             }
             this.user.img = this.newAvatar ? this.newAvatar : this.user.img;
-            this.$store.dispatch('updateUser', this.user, this.oldUsername);
+            this.$store.dispatch('updateUser', this.user);
             this.$router.push('/');
         }
     }
