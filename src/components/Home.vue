@@ -3,7 +3,13 @@
         <div v-if="user != null">
             <div style="display: flex">
                 <div style="max-height: 140px">
-                    <img :src="handleImgPrf(user)" alt="" width="140" height="140" style="border-radius: 50%">
+                    <img
+                        :src="handleImgPrf(user)"
+                        alt=""
+                        width="140"
+                        height="140"
+                        style="border-radius: 50%"
+                    />
                 </div>
                 <div style="padding-left: 12px; align-self: end">
                     <p><span>Username:</span> {{ user.username }}</p>
@@ -11,7 +17,7 @@
                         <span>Created at:</span>
                         {{
                             new Date(
-                                user.createdAt.seconds * 1000
+                                user.createdAt.seconds * 1000,
                             ).toLocaleString()
                         }}
                     </p>
@@ -22,7 +28,12 @@
                 <div style="display: flex">
                     <span
                         style="margin-left: auto"
-                        @click="$router.push({ name: 'add', params: { userId: user.id } })"
+                        @click="
+                            $router.push({
+                                name: 'add',
+                                params: { userId: user.id },
+                            })
+                        "
                         class="material-icons md-26 op"
                         >add</span
                     >
@@ -48,7 +59,12 @@
                     <h4 class="over"><span>Name:</span> {{ source.name }}</h4>
                     <div style="display: flex; max-height: 140px !important">
                         <div style="max-height: 140px">
-                            <img :src="handleImgSrc(source)" alt="" width="140" height="140">
+                            <img
+                                :src="handleImgSrc(source)"
+                                alt=""
+                                width="140"
+                                height="140"
+                            />
                         </div>
                         <div
                             style="
@@ -63,16 +79,25 @@
                                     text-overflow: ellipsis;
                                 "
                             >
-                                <p class="over"><span>Description: </span>{{ source.description }}</p>
+                                <p class="over">
+                                    <span>Description: </span
+                                    >{{ source.description }}
+                                </p>
                             </div>
-                            <p><span>Current chapter: </span>{{ source.currentChapter }}</p>
+                            <p>
+                                <span>Current chapter: </span
+                                >{{ source.currentChapter }}
+                            </p>
                             <div
                                 style="
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 "
                             >
-                                <p class="notSoOver"><span>URL: </span><a :href="source.url">{{ source.url }}</a></p>
+                                <p class="notSoOver">
+                                    <span>URL: </span
+                                    ><a :href="source.url">{{ source.url }}</a>
+                                </p>
                             </div>
                             <div style="margin-top: auto">
                                 <span
@@ -90,7 +115,9 @@
                                     class="material-icons md-26 op"
                                     >delete</span
                                 >
-                                <span @click="openModal(source)" class="material-icons md-26 op modal-btn"
+                                <span
+                                    @click="openModal(source)"
+                                    class="material-icons md-26 op modal-btn"
                                     >library_books</span
                                 >
                             </div>
@@ -109,7 +136,9 @@
             <p>
                 <label for="username">Username</label>
                 <input
-                    autocorrect="off" autocapitalize="none" autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="none"
+                    autocomplete="off"
                     id="username"
                     type="text"
                     placeholder="Type your username"
@@ -146,7 +175,12 @@
                     />
                 </p>
                 <div style="margin-left: auto; display: flex">
-                    <button class="button secondary close-cancel-btn" style="margin-left: auto">Cancel</button>
+                    <button
+                        class="button secondary close-cancel-btn"
+                        style="margin-left: auto"
+                    >
+                        Cancel
+                    </button>
                     <button class="button primary close-save-btn">Save</button>
                 </div>
             </div>
@@ -154,66 +188,72 @@
     </div>
 </template>
 <script>
-import { db } from "../store/firebase";
+import { db } from '../store/firebase';
 import {
     collection,
     getDocs,
     query,
     where,
     onSnapshot,
-    doc
-} from "firebase/firestore";
+    doc,
+} from 'firebase/firestore';
 export default {
     data() {
         return {
-            username: "",
-            password: "",
+            username: '',
+            password: '',
             sourceChapterToUpdate: null,
         };
     },
     mounted() {
         if (this.user) {
             const q = query(
-                collection(db, "sources"),
-                where("user", "==", this.user.id)
+                collection(db, 'sources'),
+                where('user', '==', this.user.id),
             );
             getDocs(q).then((snapshot) => {
                 if (snapshot.empty) {
-                    console.log("data not found for you.");
+                    console.log('data not found for you.');
                     return;
                 }
                 let sources = [];
                 snapshot.forEach((doc) =>
-                    sources.push({ id: doc.id, ...doc.data() })
+                    sources.push({ id: doc.id, ...doc.data() }),
                 );
-                this.$store.commit("sources", sources);
+                this.$store.commit('sources', sources);
             });
             if (!this.$store.state.unsub) {
                 const unsub = onSnapshot(q, (snap) => {
                     let sources = [];
                     snap.forEach((doc) =>
-                        sources.push({ id: doc.id, ...doc.data() })
+                        sources.push({ id: doc.id, ...doc.data() }),
                     );
-                    this.$store.commit("sources", sources);
-                    console.log("receiving updated snapshot source data.");
+                    this.$store.commit('sources', sources);
+                    console.log('receiving updated snapshot source data.');
                 });
-                this.$store.commit("cacheUnsub", unsub);
+                this.$store.commit('cacheUnsub', unsub);
             } else {
-                console.log("data listener for sources still cached");
+                console.log('data listener for sources still cached');
             }
             if (!this.$store.state.unsubUs) {
-                const unsubUs = onSnapshot(doc(db, "users", this.user.id), (doc) => {
-                    this.$store.commit('setUser', { id: doc.id, ...doc.data() })
-                    console.log("receiving updated snapshot user data.");
-                });
-                this.$store.commit("cacheUnsubUs", unsubUs);
+                const unsubUs = onSnapshot(
+                    doc(db, 'users', this.user.id),
+                    (doc) => {
+                        this.$store.commit('setUser', {
+                            id: doc.id,
+                            ...doc.data(),
+                        });
+                        console.log('receiving updated snapshot user data.');
+                    },
+                );
+                this.$store.commit('cacheUnsubUs', unsubUs);
             } else {
-                console.log("data listener for user still cached");
+                console.log('data listener for user still cached');
             }
             return;
         }
-        if (this.user == null && localStorage.getItem("manxUser")) {
-            const user = JSON.parse(localStorage.getItem("manxUser"));
+        if (this.user == null && localStorage.getItem('manxUser')) {
+            const user = JSON.parse(localStorage.getItem('manxUser'));
             this.username = user.username;
             this.password = user.password;
             this.login();
@@ -229,29 +269,29 @@ export default {
     },
     methods: {
         login() {
-            this.$store.dispatch("login", {
+            this.$store.dispatch('login', {
                 username: this.username,
                 password: this.password,
             });
         },
         register() {
-            this.$store.commit("register", {
+            this.$store.commit('register', {
                 username: this.username,
                 password: this.password,
             });
         },
         remove(source) {
-            this.$store.commit("deleteSource", source);
+            this.$store.commit('deleteSource', source);
         },
         openModal(source) {
             this.sourceChapterToUpdate = source.currentChapter;
-            let modal = document.querySelector(".modal");
-            let cancelBtn = document.querySelector(".close-cancel-btn");
-            let saveBtn = document.querySelector(".close-save-btn");
+            let modal = document.querySelector('.modal');
+            let cancelBtn = document.querySelector('.close-cancel-btn');
+            let saveBtn = document.querySelector('.close-save-btn');
             let clearModal = () => {
-                modal.style.display = "none";
+                modal.style.display = 'none';
                 this.sourceChapterToUpdate = null;
-            }
+            };
             cancelBtn.onclick = () => {
                 clearModal();
             };
@@ -265,27 +305,27 @@ export default {
                     clearModal();
                 }
             };
-            modal.style.display = "block";
+            modal.style.display = 'block';
         },
         handleImgSrc(source) {
             return source.img != null
                 ? source.img
-                : require("../assets/cover_pc.png");
+                : require('../assets/cover_pc.png');
         },
         handleImgPrf(user) {
             return user.img != null
                 ? user.img
-                : require("../assets/profile_pc.jpg");
+                : require('../assets/profile_pc.jpg');
         },
         logout() {
-            this.$store.commit("setUser", null);
-            this.$store.commit("sources", []);
+            this.$store.commit('setUser', null);
+            this.$store.commit('sources', []);
         },
         listenEnter(event) {
-            if (event.key === "Enter") {
+            if (event.key === 'Enter') {
                 this.login();
             }
-        }
+        },
     },
 };
 </script>
