@@ -78,7 +78,8 @@ export default {
             this.source = this.$route.params.source;
             this.img = this.$route.params.source.img;
         } else {
-            this.source.user = this.$router.params.userId;
+            console.log(this.$route.params.userId);
+            this.source.user = this.$route.params.userId;
         }
     },
     methods: {
