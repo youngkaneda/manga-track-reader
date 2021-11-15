@@ -2,11 +2,9 @@
     <div class="container" style="margin-top: 2%">
         <div v-if="user != null">
             <div style="display: flex">
-                <img
-                    :src="handleImgPrf(user)"
-                    style="height: 140px !important"
-                    alt=""
-                />
+                <div style="max-height: 140px">
+                    <img :src="handleImgPrf(user)" alt="" width="140" height="140" style="border-radius: 50%">
+                </div>
                 <div style="padding-left: 12px; align-self: end">
                     <p><span>Username:</span> {{ user.username }}</p>
                     <p>
