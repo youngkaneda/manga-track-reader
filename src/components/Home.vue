@@ -120,6 +120,7 @@
             <p>
                 <label for="password">Password</label>
                 <input
+                    @keypress="listenEnter($event)"
                     id="password"
                     type="password"
                     placeholder="Type your password"
@@ -268,8 +269,13 @@ export default {
         },
         logout() {
             this.$store.commit("setUser", null);
-            this.$store.commit('sources', []);
+            this.$store.commit("sources", []);
         },
+        listenEnter(event) {
+            if (event.key === "Enter") {
+                this.login();
+            }
+        }
     },
 };
 </script>
