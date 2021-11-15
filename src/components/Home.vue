@@ -24,7 +24,7 @@
                 <div style="display: flex">
                     <span
                         style="margin-left: auto"
-                        @click="$router.push({ name: 'add' })"
+                        @click="$router.push({ name: 'add', params: { userId: user.id } })"
                         class="material-icons md-26 op"
                         >add</span
                     >

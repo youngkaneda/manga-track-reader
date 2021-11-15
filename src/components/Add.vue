@@ -77,6 +77,8 @@ export default {
         } else if (this.$route.path.includes('/edit')) {
             this.source = this.$route.params.source;
             this.img = this.$route.params.source.img;
+        } else {
+            this.source.user = this.$router.params.userId;
         }
     },
     methods: {
