@@ -5,12 +5,12 @@ import { getFirestore } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'AIzaSyBIxndiUOQGBBqjHTACFofSISTk_8bG6mA',
+    apiKey: process.env.FB_API_ID,
     authDomain: 'manx-read-track.firebaseapp.com',
     projectId: 'manx-read-track',
     storageBucket: 'manx-read-track.appspot.com',
-    messagingSenderId: '574756155133',
-    appId: '1:574756155133:web:6f93e87cccc82562259894'
+    messagingSenderId: process.env.SENDER_ID,
+    appId: process.env.FB_APP_ID
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
