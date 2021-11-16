@@ -12,9 +12,9 @@
                     />
                 </div>
                 <div style="padding-left: 12px; align-self: end">
-                    <p><span style="cursor: auto !important;">Username:</span> {{ user.username }}</p>
+                    <p><span>Username:</span> {{ user.username }}</p>
                     <p>
-                        <span style="cursor: auto !important;">Created at:</span>
+                        <span>Created at:</span>
                         {{
                             new Date(
                                 user.createdAt.seconds * 1000,
@@ -353,9 +353,6 @@ span {
     font-weight: bold;
     margin-top: auto;
 }
-span:hover {
-    cursor: pointer;
-}
 .material-icons.md-26 {
     font-size: 26px;
 }
@@ -366,6 +363,7 @@ span:hover {
 .op:hover {
     background-color: #dcdcdc;
     border-radius: 2px;
+    cursor: pointer;
 }
 img {
     object-fit: cover;
