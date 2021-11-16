@@ -12,9 +12,9 @@
                     />
                 </div>
                 <div style="padding-left: 12px; align-self: end">
-                    <p><span>Username:</span> {{ user.username }}</p>
+                    <p><span style="cursor: auto !important;">Username:</span> {{ user.username }}</p>
                     <p>
-                        <span>Created at:</span>
+                        <span style="cursor: auto !important;">Created at:</span>
                         {{
                             new Date(
                                 user.createdAt.seconds * 1000,
