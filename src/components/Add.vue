@@ -81,7 +81,7 @@ export default {
     data() {
         return {
             source: {
-                currentChapter: 1,
+                currentChapter: 0,
             },
             img: null,
         };
