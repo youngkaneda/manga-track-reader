@@ -38,7 +38,9 @@
             </p>
             <p style="margin-top: 10px">
                 <label for="desc">Description</label>
-                <input
+                <textarea
+                    rows="4"
+                    style="resize: none;"
                     id="desc"
                     type="text"
                     placeholder="Type the description"
@@ -79,7 +81,7 @@ export default {
     data() {
         return {
             source: {
-                currentChapter: 0,
+                currentChapter: 1,
             },
             img: null,
         };

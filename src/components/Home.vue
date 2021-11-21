@@ -78,6 +78,8 @@
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 "
+                                @click="openDescModal(source)"
+                                id="descr"
                             >
                                 <p class="over">
                                     <span>Description: </span
@@ -116,7 +118,7 @@
                                     >delete</span
                                 >
                                 <span
-                                    @click="openModal(source)"
+                                    @click="openCounterModal(source)"
                                     class="material-icons md-26 op modal-btn"
                                     >library_books</span
                                 >
@@ -162,7 +164,7 @@
                 <button class="button primary" @click="login()">Login</button>
             </div>
         </div>
-        <div class="modal">
+        <div id="modal-counter" class="modal">
             <div class="modal-content">
                 <p style="margin: 13px 0 13px 0" v-if="sourceChapterToUpdate">
                     <label for="chapter">Current chapter</label>
@@ -182,6 +184,22 @@
                         Cancel
                     </button>
                     <button class="button primary close-save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+        <div id="modal-desc" class="modal">
+            <div class="modal-content">
+                <p style="margin: 13px 0 13px 0">
+                    <label for="chapter">Full description</label>
+                    <p id="descP" style="margin-bottom: 13px"></p>
+                </p>
+                <div style="margin-left: auto; display: flex">
+                    <button
+                        class="button secondary close-cancel-btn-desc"
+                        style="margin-left: auto"
+                    >
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -283,9 +301,9 @@ export default {
         remove(source) {
             this.$store.commit('deleteSource', source);
         },
-        openModal(source) {
+        openCounterModal(source) {
             this.sourceChapterToUpdate = source.currentChapter;
-            let modal = document.querySelector('.modal');
+            let modal = document.querySelector('#modal-counter');
             let cancelBtn = document.querySelector('.close-cancel-btn');
             let saveBtn = document.querySelector('.close-save-btn');
             let clearModal = () => {
@@ -298,6 +316,25 @@ export default {
             saveBtn.onclick = () => {
                 source.currentChapter = this.sourceChapterToUpdate;
                 this.$store.commit('updateSource', source);
+                clearModal();
+            };
+            window.onclick = (e) => {
+                if (e.target == modal) {
+                    clearModal();
+                }
+            };
+            modal.style.display = 'block';
+        },
+        openDescModal(source) {
+            let modal = document.querySelector('#modal-desc');
+            let descP = document.querySelector('#descP');
+            let cancelBtn = document.querySelector('.close-cancel-btn-desc');
+            descP.innerText = source.description;
+            let clearModal = () => {
+                modal.style.display = 'none';
+                descP.innerText = '';
+            };
+            cancelBtn.onclick = () => {
                 clearModal();
             };
             window.onclick = (e) => {
@@ -335,6 +372,10 @@ export default {
         width: 398px !important;
     }
 }
+#descr:hover {
+    cursor: pointer;
+    background-color: rgba(150, 150, 150, 0.2);
+} 
 .over {
     display: -webkit-box;
     -webkit-line-clamp: 2;
